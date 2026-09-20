@@ -1,0 +1,548 @@
+:root {
+  --color-bg: #F5F6FA;
+  --color-surface: #FFFFFF;
+  --color-border: #E3E6ED;
+  --color-text: #1F2430;
+  --color-text-soft: #6B7280;
+  --color-primary: #4F46E5;
+  --color-primary-dark: #4338CA;
+  --color-primary-soft: #EEF0FF;
+  --color-danger: #DC2626;
+  --color-danger-soft: #FDECEC;
+  --color-success: #16A34A;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-card: 0 8px 24px rgba(20, 24, 40, 0.08);
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* author rules with an explicit `display` (e.g. .success-overlay) would
+   otherwise beat the browser's built-in [hidden]{display:none} rule */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2 { margin: 0; }
+
+/* ---------- Header ---------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+.app-header-title { display: flex; align-items: center; gap: 10px; }
+
+.logo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-soft);
+}
+
+.app-header-title h1 { font-size: 17px; font-weight: 700; }
+
+.header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.btn-ghost {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.btn-ghost:hover { background: var(--color-primary-soft); }
+
+/* ---------- Stage (holds phone chrome when previewing mobile) ---------- */
+.stage {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.phone-chrome {
+  width: 100%;
+  position: relative;
+}
+
+.phone-island,
+.phone-home-indicator { display: none; }
+
+/* ---------- Form layout ---------- */
+.app-shell { max-width: 1040px; margin: 0 auto; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-soft);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 14px;
+}
+
+.field { margin-bottom: 16px; }
+.field:last-child { margin-bottom: 0; }
+
+.field label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.req { color: var(--color-danger); }
+
+.field select,
+.field textarea,
+.field input[type="text"] {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: #FCFCFD;
+  color: var(--color-text);
+  min-height: 44px;
+  resize: vertical;
+}
+
+.field select:focus,
+.field textarea:focus,
+.field input[type="text"]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+}
+
+.field-error {
+  display: none;
+  color: var(--color-danger);
+  font-size: 12px;
+  margin: 6px 0 0;
+}
+
+.field.invalid select,
+.field.invalid textarea,
+.field.invalid input[type="text"] {
+  border-color: var(--color-danger);
+  background: var(--color-danger-soft);
+}
+.field.invalid .field-error { display: block; }
+
+/* ---------- Image dropzone ---------- */
+.dropzone {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 22px 16px;
+  text-align: center;
+  background: #FAFAFC;
+  cursor: text;
+  transition: border-color .15s ease, background .15s ease;
+}
+.dropzone:focus, .dropzone.drag-over {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.dropzone-hint { margin: 0; font-size: 13px; color: var(--color-text-soft); }
+.dropzone-hint kbd {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 12px;
+}
+
+.thumb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.thumb-grid:empty { display: none; }
+
+.thumb {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,.55);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.hint-text { font-size: 12px; color: var(--color-text-soft); margin: 8px 0 0; }
+.hint-text.hint-error { color: var(--color-danger); }
+
+/* ---------- Buttons ---------- */
+.btn-primary, .btn-secondary {
+  width: 100%;
+  min-height: 48px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  margin-top: 18px;
+  transition: background .15s ease;
+}
+.btn-primary:hover { background: var(--color-primary-dark); }
+.btn-primary:disabled { opacity: .7; cursor: not-allowed; }
+
+.btn-secondary {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  margin-top: 10px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.4);
+  border-top-color: #fff;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-bg);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* ---------- History drawer ---------- */
+.history-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 340px;
+  max-width: 88vw;
+  background: var(--color-surface);
+  border-left: 1px solid var(--color-border);
+  box-shadow: -8px 0 24px rgba(20,24,40,.1);
+  transform: translateX(100%);
+  transition: transform .25s ease;
+  z-index: 40;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+.history-drawer.open { transform: translateX(0); }
+
+.history-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.history-empty { color: var(--color-text-soft); font-size: 13px; }
+
+.history-list { list-style: none; margin: 0; padding: 0; overflow-y: auto; }
+
+.history-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.history-item-id { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.history-item-text {
+  font-size: 12px;
+  color: var(--color-text-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.history-item button {
+  font-size: 12px;
+  padding: 6px 10px;
+  min-height: 32px;
+  width: auto;
+  margin: 0;
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,17,25,.4);
+  z-index: 30;
+}
+
+/* ---------- Success overlay ---------- */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 96px;
+  background: rgba(15,17,25,.35);
+}
+
+.success-card {
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 22px;
+}
+
+.success-card-handle { display: none; }
+
+.success-card h2 { font-size: 16px; margin-bottom: 12px; }
+
+.success-text-box {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  max-height: 160px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  background: #1F2430;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  box-shadow: var(--shadow-card);
+  z-index: 60;
+}
+.toast.toast-error { background: var(--color-danger); }
+.toast.toast-success { background: var(--color-success); }
+
+/* ---------- visibility helpers ---------- */
+.mobile-only { display: none; }
+.desktop-only { display: block; }
+
+/* =====================================================================
+   MOBILE VIEW — forced via body[data-view="mobile"], independent of the
+   real browser width, so we can preview the iPhone 17 layout on a
+   desktop screen without resizing the window.
+   ===================================================================== */
+body[data-view="mobile"] .mobile-only { display: flex; }
+body[data-view="mobile"] .desktop-only { display: none; }
+
+body[data-view="mobile"] .stage { padding: 24px 12px; background: #DCE0EA; }
+
+body[data-view="mobile"] .phone-chrome {
+  width: 402px;
+  min-height: 874px;
+  background: var(--color-bg);
+  border: 10px solid #101114;
+  border-radius: 46px;
+  box-shadow: 0 30px 60px rgba(10,12,20,.35);
+  overflow: hidden;
+  position: relative;
+  padding-top: 44px;
+  padding-bottom: 34px;
+  /* Establishes a containing block for position:fixed descendants (drawer,
+     scrim, success sheet, toast) so they render clipped to this mock phone
+     frame instead of the real browser viewport. Desktop mode has no
+     transform, so the same elements stay fixed to the real viewport there. */
+  transform: translateZ(0);
+}
+
+body[data-view="mobile"] .phone-island {
+  display: block;
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 26px;
+  background: #101114;
+  border-radius: 20px;
+  z-index: 5;
+}
+
+body[data-view="mobile"] .phone-home-indicator {
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  border-radius: 3px;
+  background: #101114;
+  opacity: .4;
+}
+
+body[data-view="mobile"] .app-shell {
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 16px;
+}
+
+body[data-view="mobile"] .layout {
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+body[data-view="mobile"] .panel { padding: 16px; }
+
+body[data-view="mobile"] .btn-submit { position: sticky; bottom: 8px; }
+
+body[data-view="mobile"] .fab {
+  position: absolute;
+  right: 16px;
+  bottom: calc(34px + 16px); /* home-indicator safe area + gap */
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 20px;
+  box-shadow: var(--shadow-card);
+  z-index: 10;
+  cursor: pointer;
+}
+
+body[data-view="mobile"] .history-drawer {
+  width: 82%;
+}
+
+body[data-view="mobile"] .success-overlay {
+  align-items: flex-end;
+  padding-top: 0;
+  background: rgba(15,17,25,.35);
+}
+
+body[data-view="mobile"] .success-card {
+  width: 100%;
+  max-width: none;
+  border-radius: 20px 20px 0 0;
+  padding-bottom: calc(22px + 34px); /* home-indicator safe area */
+}
+
+body[data-view="mobile"] .success-card-handle {
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: 3px;
+  background: var(--color-border);
+  margin: 0 auto 14px;
+}
+
+/* Small screens (real narrow browser, e.g. dev tools responsive mode) */
+@media (max-width: 767px) {
+  .stage { padding: 0; }
+  .phone-chrome {
+    width: 100% !important;
+    min-height: 100vh !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .phone-island, .phone-home-indicator { display: none !important; }
+  .app-shell { padding: 0 16px; }
+  .layout { grid-template-columns: 1fr; gap: 14px; }
+  .panel { padding: 16px; }
+  .mobile-only { display: flex; }
+  .desktop-only { display: none; }
+  .fab {
+    position: fixed;
+    right: 16px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    width: 52px; height: 52px; border-radius: 50%; border: none;
+    background: var(--color-primary); color: #fff; font-size: 20px;
+    box-shadow: var(--shadow-card); z-index: 10; cursor: pointer;
+  }
+  .history-drawer { width: 82%; }
+  .success-overlay { align-items: flex-end; }
+  .success-card {
+    width: 100%; border-radius: 20px 20px 0 0;
+    padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+  }
+  .success-card-handle {
+    display: block; width: 40px; height: 4px; border-radius: 3px;
+    background: var(--color-border); margin: 0 auto 14px;
+  }
+}

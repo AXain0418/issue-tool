@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>問題單建立工具</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-view="desktop">
+
+  <header class="app-header">
+    <div class="app-header-title">
+      <span class="logo-dot"></span>
+      <h1>🐞 問題單建立工具</h1>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="btn-ghost" id="historyToggleBtn">🕘 歷史紀錄</button>
+    </div>
+  </header>
+
+  <div class="stage" id="stage">
+    <div class="phone-chrome" id="phoneChrome">
+      <div class="phone-island"></div>
+
+      <main class="app-shell">
+        <form class="layout" id="issueForm" novalidate>
+
+          <section class="panel panel-left">
+            <h2 class="panel-title">📋 問題屬性</h2>
+
+            <div class="field" data-field="site">
+              <label>🖥️ 系統站台 <span class="req">*</span></label>
+              <select required>
+                <option value="">請選擇站台</option>
+              </select>
+              <p class="field-error">⚠️ 此欄位為必填</p>
+            </div>
+
+            <div class="field" data-field="module">
+              <label>🧩 系統模組 <span class="req">*</span></label>
+              <select required>
+                <option value="">請選擇模組</option>
+              </select>
+              <p class="field-error">⚠️ 此欄位為必填</p>
+            </div>
+
+            <div class="field" data-field="function">
+              <label>⚙️ 系統功能 <span class="req">*</span></label>
+              <input type="text" required list="functionSuggestions" placeholder="請輸入功能名稱，例如：登入頁、報表匯出...">
+              <datalist id="functionSuggestions">
+                <option value="案件查詢">
+                <option value="會議記錄">
+                <option value="文件下載">
+                <option value="權限設定">
+              </datalist>
+              <p class="field-error">⚠️ 此欄位為必填</p>
+            </div>
+
+            <div class="field" data-field="type">
+              <label>🏷️ 問題類型 <span class="req">*</span></label>
+              <select required>
+                <option value="">請選擇類型</option>
+              </select>
+              <p class="field-error">⚠️ 此欄位為必填</p>
+            </div>
+
+            <div class="field" data-field="reporter">
+              <label>🙋 提出者 <span class="req">*</span></label>
+              <select required id="reporterSelect">
+                <option value="">請選擇提出者</option>
+              </select>
+              <p class="field-error">⚠️ 此欄位為必填</p>
+            </div>
+          </section>
+
+          <section class="panel panel-right">
+            <h2 class="panel-title">📝 問題內容</h2>
+
+            <div class="field" data-field="description">
+              <label>💬 問題描述 <span class="req">*</span></label>
+              <textarea required rows="5" placeholder="請描述遇到的問題、預期結果與實際結果..."></textarea>
+              <p class="field-error">⚠️ 此欄位為必填</p>
+            </div>
+
+            <div class="field">
+              <label>🖼️ 問題畫面圖片（選填）</label>
+              <div class="dropzone" id="dropzone" tabindex="0">
+                <p class="dropzone-hint desktop-only">📋 拖曳圖片到這裡，或按下 <kbd>Ctrl</kbd> + <kbd>V</kbd> 貼上剪貼簿截圖</p>
+                <button type="button" class="btn-secondary mobile-only" id="pickImageBtn">📷 點擊選擇圖片 / 拍照</button>
+                <input type="file" id="fileInput" accept="image/*" multiple hidden>
+              </div>
+              <div class="thumb-grid" id="thumbGrid"></div>
+              <p class="hint-text">📎 最多可上傳 <b>5</b> 張，單張檔案不超過 <b>5MB</b></p>
+              <p class="hint-text hint-error" id="imageLimitError" hidden></p>
+            </div>
+
+            <button type="submit" class="btn-primary btn-submit" id="submitBtn">
+              <span class="btn-label">📨 送出問題單</span>
+              <span class="spinner" hidden></span>
+            </button>
+          </section>
+
+        </form>
+      </main>
+
+      <button type="button" class="fab mobile-only" id="fabHistoryBtn" aria-label="歷史紀錄">🕘</button>
+      <div class="phone-home-indicator"></div>
+
+      <!-- 以下疊層元件刻意巢狀於 .phone-chrome 內：手機預覽模式下 .phone-chrome
+           會建立新的 containing block，讓這些 position:fixed 疊層被限制在手機
+           外框內顯示（如同真實手機畫面），桌機模式則維持相對整個視窗定位。 -->
+      <div class="scrim" id="scrim" hidden></div>
+
+      <aside class="history-drawer" id="historyDrawer">
+        <div class="history-drawer-header">
+          <h2>🕘 歷史紀錄</h2>
+          <button type="button" class="btn-icon" id="closeHistoryBtn" aria-label="關閉">✕</button>
+        </div>
+        <p class="history-empty" id="historyEmpty">尚無送出紀錄</p>
+        <ul class="history-list" id="historyList"></ul>
+      </aside>
+
+      <div class="success-overlay" id="successOverlay" hidden>
+        <div class="success-card" id="successCard">
+          <div class="success-card-handle mobile-only"></div>
+          <h2>✅ 建立成功　單號 <span id="successId">#1024</span></h2>
+          <div class="success-text-box">
+            <p id="successText"></p>
+          </div>
+          <button type="button" class="btn-primary btn-copy" id="copyBtn">📋 一鍵複製提醒文案</button>
+          <button type="button" class="btn-secondary" id="nextBtn">➕ 建立下一筆</button>
+        </div>
+      </div>
+
+      <div class="toast" id="toast" hidden></div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
